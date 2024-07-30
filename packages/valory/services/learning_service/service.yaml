@@ -5,9 +5,9 @@ description: A learning service.
 aea_version: '>=1.0.0, <2.0.0'
 license: Apache-2.0
 fingerprint:
-  README.md: bafybeid42pdrf6qrohedylj4ijrss236ai6geqgf3he44huowiuf7pl464
+  README.md: bafybeicpjoeab2f4rfagvifh257iaqayrokswthnea7mvbheuh3jxzo2re
 fingerprint_ignore_patterns: []
-agent: valory/learning_agent:0.1.0:bafybeiavib2kjqwahd4lkpgjhld3jfi2njecdvef5nnbt3bheqjv6gyxie
+agent: valory/learning_agent:0.1.0:bafybeif4znmxitqn3hw2l6y5wwd3vlj6nev32buieu35g4a5oguophyx7y
 number_of_agents: 4
 deployment:
   agent:
@@ -27,7 +27,7 @@ extra:
   params_args:
     args:
       setup: &id001
-        safe_contract_address: ${SAFE_CONTRACT_ADDRESS:str:0x0000000000000000000000000000000000000000}
+        safe_contract_address: ${SAFE_CONTRACT_ADDRESS:str:0xb9CC0dC3c2be6979FF8cf9ebd7b04284A4eD2fc0}
         all_participants: ${ALL_PARTICIPANTS:list:[]}
         consensus_threshold: null
       genesis_config: &id002
@@ -93,6 +93,9 @@ extra:
         coingecko_price_template: ${COINGECKO_PRICE_TEMPLATE:str:https://api.coingecko.com/api/v3/simple/price?ids=autonolas&vs_currencies=usd&x_cg_demo_api_key={api_key}}
         coingecko_api_key: ${COINGECKO_API_KEY:str:null}
         transfer_target_address: ${TRANSFER_TARGET_ADDRESS:str:0x615d3278680337e2D39C3bc5042D959C7938B917}
+        real_estate_contract_address: ${REAL_ESTATE_CONTRACT_ADDRESS:str:0xbB98B72A19cEeDaAB9dA2C01be0649471a2b6820}
+        real_estate_token: ${REAL_ESTATE_TOKEN:str:'0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'}
+        buy_price_range: ${BUY_PRICE_RANGE:list:[125, 140]}
 1:
   models:
     benchmark_tool:
@@ -139,6 +142,9 @@ extra:
         coingecko_price_template: ${COINGECKO_PRICE_TEMPLATE:str:https://api.coingecko.com/api/v3/simple/price?ids=autonolas&vs_currencies=usd&x_cg_demo_api_key={api_key}}
         coingecko_api_key: ${COINGECKO_API_KEY:str:null}
         transfer_target_address: ${TRANSFER_TARGET_ADDRESS:str:0x615d3278680337e2D39C3bc5042D959C7938B917}
+        real_estate_contract_address: ${REAL_ESTATE_CONTRACT_ADDRESS:str:0xbB98B72A19cEeDaAB9dA2C01be0649471a2b6820}
+        real_estate_token: ${REAL_ESTATE_TOKEN:str:'0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'}
+        buy_price_range: ${BUY_PRICE_RANGE:list:[125, 140]}
 2:
   models:
     benchmark_tool:
@@ -185,6 +191,9 @@ extra:
         coingecko_price_template: ${COINGECKO_PRICE_TEMPLATE:str:https://api.coingecko.com/api/v3/simple/price?ids=autonolas&vs_currencies=usd&x_cg_demo_api_key={api_key}}
         coingecko_api_key: ${COINGECKO_API_KEY:str:null}
         transfer_target_address: ${TRANSFER_TARGET_ADDRESS:str:0x615d3278680337e2D39C3bc5042D959C7938B917}
+        real_estate_contract_address: ${REAL_ESTATE_CONTRACT_ADDRESS:str:0xbB98B72A19cEeDaAB9dA2C01be0649471a2b6820}
+        real_estate_token: ${REAL_ESTATE_TOKEN:str:'0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'}
+        buy_price_range: ${BUY_PRICE_RANGE:list:[125, 140]}
 3:
   models:
     benchmark_tool:
@@ -231,19 +240,22 @@ extra:
         coingecko_price_template: ${COINGECKO_PRICE_TEMPLATE:str:https://api.coingecko.com/api/v3/simple/price?ids=autonolas&vs_currencies=usd&x_cg_demo_api_key={api_key}}
         coingecko_api_key: ${COINGECKO_API_KEY:str:null}
         transfer_target_address: ${TRANSFER_TARGET_ADDRESS:str:0x615d3278680337e2D39C3bc5042D959C7938B917}
+        real_estate_contract_address: ${REAL_ESTATE_CONTRACT_ADDRESS:str:0xbB98B72A19cEeDaAB9dA2C01be0649471a2b6820}
+        real_estate_token: ${REAL_ESTATE_TOKEN:str:'0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'}
+        buy_price_range: ${BUY_PRICE_RANGE:list:[125, 140]}
 ---
 public_id: valory/ledger:0.19.0
 type: connection
 config:
   ledger_apis:
     ethereum:
-      address: ${ETHEREUM_LEDGER_RPC:str:http://host.docker.internal:8545}
-      chain_id: ${ETHEREUM_LEDGER_CHAIN_ID:int:31337}
+      address: ${ETHEREUM_LEDGER_RPC:str:https://virtual.mainnet.rpc.tenderly.co/35124d99-60f3-44b0-a34c-277bbcafa48a}
+      chain_id: ${ETHEREUM_LEDGER_CHAIN_ID:int:1}
       poa_chain: ${ETHEREUM_LEDGER_IS_POA_CHAIN:bool:false}
       default_gas_price_strategy: ${ETHEREUM_LEDGER_PRICING:str:eip1559}
     gnosis:
-      address: ${GNOSIS_LEDGER_RPC:str:http://host.docker.internal:8545}
-      chain_id: ${GNOSIS_LEDGER_CHAIN_ID:int:42220}
+      address: ${GNOSIS_LEDGER_RPC:str:https://virtual.gnosis.rpc.tenderly.co/e98802f3-734e-4734-b9b8-967f876bd365}
+      chain_id: ${GNOSIS_LEDGER_CHAIN_ID:int:100}
       poa_chain: ${GNOSIS_LEDGER_IS_POA_CHAIN:bool:false}
       default_gas_price_strategy: ${GNOSIS_LEDGER_PRICING:str:eip1559}
 ---

@@ -54,4 +54,13 @@ class Params(BaseParams):
         self.transfer_target_address = self._ensure(
             "transfer_target_address", kwargs, str
         )
+        self.real_estate_contract_address = self._ensure(
+            "real_estate_contract_address", kwargs, str
+        )
+        self.buy_price_range = self._ensure(
+            "buy_price_range", kwargs, list
+        )
+        self.real_estate_token = self._ensure(
+            "real_estate_token", kwargs, str
+        )
         super().__init__(*args, **kwargs)

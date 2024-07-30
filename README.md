@@ -1,92 +1,45 @@
-## Learning Service
+# Real Estate Market Service
 
-A service to learn about [Olas](https://olas.network/) agents and [Open Autonomy](https://github.com/valory-xyz/open-autonomy).
+This service interacts with the RealEstateMarketWithERC20 contract to manage real estate properties, enabling the registration, listing, and sale of properties using ERC-20 tokens.
 
+## Deployment Details
+- Smart Contract Address: [Add your deployed contract address here]
+- ERC-20 Token Address: [Add your deployed token address here]
 
-## System requirements
+## Overview
+The RealEstateMarketWithERC20 contract allows users to register properties, list them for sale, and buy properties using ERC-20 tokens. The service integrates with this contract to facilitate seamless property transactions.
 
-- Python `>=3.10`
-- [Tendermint](https://docs.tendermint.com/v0.34/introduction/install.html) `==0.34.19`
-- [IPFS node](https://docs.ipfs.io/install/command-line/#official-distributions) `==0.6.0`
-- [Pip](https://pip.pypa.io/en/stable/installation/)
-- [Poetry](https://python-poetry.org/)
-- [Docker Engine](https://docs.docker.com/engine/install/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
-- [Set Docker permissions so you can run containers as non-root user](https://docs.docker.com/engine/install/linux-postinstall/)
+## Current Logic
+### Property Registration
+Users can register new properties with a name and value. Each property is assigned a unique ID and is initially not for sale.
 
+### Listing for Sale
+Property owners can list their properties for sale by setting the `forSale` flag to true. Only the owner of a property can list it for sale.
 
-## Run you own agent
+### Buying Property
+Users can buy listed properties using ERC-20 tokens. The service checks for the required token allowance and transfers the tokens from the buyer to the seller. Upon successful transfer, the property ownership is updated, and the property is removed from the previous owner's list and added to the new owner's list.
 
-### Get the code
+## Current Workflow
+### Property Registration
+1. Call `registerProperty(string _name, uint256 _value)` to register a new property.
+2. The property is assigned a unique ID and stored in the `properties` mapping.
+3. The property is added to the `ownerProperties` mapping for the current owner.
 
-1. Clone this repo:
+### Listing for Sale
+1. The property owner calls a function to list the property for sale.
+2. The `forSale` flag of the property is set to true.
+3. The property is now available for purchase.
 
-    ```
-    git clone git@github.com:valory-xyz/academy-learning-service-template.git
-    ```
+### Buying Property
+1. The buyer checks the properties available for sale.
+2. The buyer approves the required token amount to the contract.
+3. The buyer calls `buyProperty(uint256 _propertyId)` to purchase the property.
+4. The contract checks the token allowance and transfers the tokens from the buyer to the seller.
+5. The property ownership is transferred to the buyer, and the property is removed from the previous owner's list and added to the buyer's list.
 
-2. Create the virtual environment:
+## Future Enhancements
+- Implementing more advanced property management features, such as property valuation updates and rental agreements.
+- Enhancing the service to handle multiple property listings and transactions concurrently.
+- Integrating external data sources for property valuation and market analysis.
 
-    ```
-    cd academy-learning-service
-    poetry shell
-    poetry install
-    ```
-
-3. Sync packages:
-
-    ```
-    autonomy packages sync --update-packages
-    ```
-
-### Prepare the data
-
-1. Prepare a `keys.json` file containing wallet address and the private key for each of the four agents.
-
-    ```
-    autonomy generate-key ethereum -n 4
-    ```
-
-2. Prepare a `ethereum_private_key.txt` file containing one of the private keys from `keys.json`. Ensure that there is no newline at the end.
-
-3. Deploy a [Safe on Gnosis](https://app.safe.global/welcome) (it's free) and set your agent addresses as signers. Set the signature threshold to 3 out of 4.
-
-4. Fund your agents and Safe with a small amount of xDAI, i.e. $0.02 each.
-
-5. Make a copy of the env file:
-
-    ```
-    cp sample.env .env
-    ```
-
-6. Fill in the required environment variables in .env. These variables are: `ALL_PARTICIPANTS`, `GNOSIS_LEDGER_RPC`, `COINGECKO_API_KEY` and `SAFE_CONTRACT_ADDRESS`. You will need to get a [Coingecko](https://www.coingecko.com/) free API and a [Tenderly](https://tenderly.co/) fork RPC (or alternatively an actual mainnet RPC if you want to run against the real chain).
-
-
-### Run the service
-
-1. Check that Docker is running:
-
-    ```
-    docker
-    ```
-
-2. Run the service:
-
-    ```
-    bash run_service.sh
-    ```
-
-3. Look at the service logs (on another terminal):
-
-    ```
-    docker logs -f learningservice_abci_0
-    ```
-
-
-### Run a single agent
-
-1. Run the agent:
-
-    ```
-    bash run_agent.sh
-    ```
+This service ensures efficient management of real estate properties by leveraging the OLAS framework for dynamic and secure property transactions using ERC-20 tokens.

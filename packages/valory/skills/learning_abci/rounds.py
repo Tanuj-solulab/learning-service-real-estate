@@ -20,7 +20,7 @@
 """This package contains the rounds of LearningAbciApp."""
 
 from enum import Enum
-from typing import Dict, FrozenSet, Optional, Set, Tuple
+from typing import Dict, FrozenSet, Optional, Set, Tuple, cast
 
 from packages.valory.skills.abstract_round_abci.base import (
     AbciApp,
@@ -39,6 +39,7 @@ from packages.valory.skills.learning_abci.payloads import (
     DecisionMakingPayload,
     TxPreparationPayload,
 )
+import json
 
 
 class Event(Enum):
@@ -49,6 +50,8 @@ class Event(Enum):
     TRANSACT = "transact"
     NO_MAJORITY = "no_majority"
     ROUND_TIMEOUT = "round_timeout"
+    # HOLD = "hold"
+    # BUY = "buy"
 
 
 class SynchronizedData(BaseSynchronizedData):
@@ -88,6 +91,45 @@ class SynchronizedData(BaseSynchronizedData):
         """Get the round that submitted a tx to transaction_settlement_abci."""
         return str(self.db.get_strict("tx_submitter"))
 
+    @property
+    def ipfs_hash(self) -> Optional[str]:
+        """Get the ipfs hash value."""
+        return self.db.get("ipfs_hash", None)
+
+    # @property
+    # def property_data(self) -> Optional[Dict[str, any]]:
+    #     """
+    #     Get the property data.
+
+    #     This assumes property_data is stored as a JSON string.
+    #     """
+    #     serialized_data = self.db.get("property_data", None)
+    #     if serialized_data:
+    #         try:
+    #             return json.loads(serialized_data)
+    #         except json.JSONDecodeError:
+    #             self.context.logger.error("Failed to deserialize property_data from JSON.")
+    #             return None
+    #     return None
+
+    @property
+    def property_id(self) -> Optional[str]:
+        """
+        Get the property ID from property data.
+
+        Assumes property_data is a JSON object with a 'property_id' key.
+        """
+        return self.db.get("property_id")
+
+    @property
+    def property_value(self) -> Optional[int]:
+        """
+        Get the property value from property data.
+
+        Assumes property_data is a JSON object with a 'property_value' key.
+        """
+        return self.db.get("property_value")
+
 
 class APICheckRound(CollectSameUntilThresholdRound):
     """APICheckRound"""
@@ -97,7 +139,10 @@ class APICheckRound(CollectSameUntilThresholdRound):
     done_event = Event.DONE
     no_majority_event = Event.NO_MAJORITY
     collection_key = get_name(SynchronizedData.participant_to_price_round)
-    selection_key = get_name(SynchronizedData.price)
+    selection_key = (
+        get_name(SynchronizedData.price),
+        get_name(SynchronizedData.ipfs_hash),
+    )
 
     # Event.ROUND_TIMEOUT  # this needs to be referenced for static checkers
 
@@ -112,8 +157,30 @@ class DecisionMakingRound(CollectSameUntilThresholdRound):
         """Process the end of the block."""
 
         if self.threshold_reached:
-            event = Event(self.most_voted_payload)
-            return self.synchronized_data, event
+            payload = json.loads(self.most_voted_payload)
+            event = Event(payload["event"])
+            synchronized_data = cast(SynchronizedData, self.synchronized_data)
+
+            # Ensure property data is always serialized
+            # property_id = payload.get("property_data", {}).get("property_id", None)
+            # if property_id and not isinstance(property_id, str):
+            #     payload["property_data"]["property_id"] = json.dumps(
+            #         property_id, sort_keys=True
+            #     )
+
+            # property_value = payload.get("property_data", {}).get(
+            #     "property_value", None
+            # )
+            # if property_value and not isinstance(property_value, str):
+            #     payload["property_data"]["property_value"] = json.dumps(
+            #         property_value, sort_keys=True
+            #     )
+
+            synchronized_data = synchronized_data.update(
+                synchronized_data_class=SynchronizedData,
+                **payload.get("property_data", {})
+            )
+            return synchronized_data, event
 
         if not self.is_majority_possible(
             self.collection, self.synchronized_data.nb_participants

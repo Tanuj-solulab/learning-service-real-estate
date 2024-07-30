@@ -5,7 +5,7 @@ license: Apache-2.0
 description: A learning agent.
 aea_version: '>=1.19.0, <2.0.0'
 fingerprint:
-  __init__.py: bafybeie5m76ta46xggcm6dyxszq7ktm5jmcikgqoxho6sttnzvogn52zdq
+  __init__.py: bafybeidwacfpibfyg2mjm37fugkr753dpperp5trpkr4bpr6pv6jwvaffe
 fingerprint_ignore_patterns: []
 connections:
 - valory/abci:0.1.0:bafybeibe5opulxvsjan6dnjspdxxlusdm3yx67rza5ynhvcip4luzrkop4
@@ -19,6 +19,8 @@ contracts:
 - valory/gnosis_safe_proxy_factory:0.1.0:bafybeih3l5lgrccd45ymd4lfru22ex2wgmjzqne37rja4ehxgzirabm6v4
 - valory/multisend:0.1.0:bafybeig5byt5urg2d2bsecufxe5ql7f4mezg3mekfleeh32nmuusx66p4y
 - valory/service_registry:0.1.0:bafybeie5fakcu3fnpako5stfzmfz2a65ruodusia3ap6othlmtiug6kfvm
+- valory/erc20:0.1.0:bafybeibzxxxjscpoyhcw2nfnmlkmwfx5jbqqzzl6ixtasy3o4qaxmhbv64
+- valory/real_estate_solution:0.1.0:bafybeiecdwurtdwbigjmno5uepltk7fchwo4hjn7uxlrpyu5d4v7hfkcpi
 protocols:
 - open_aea/signing:1.0.0:bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi
 - valory/abci:0.1.0:bafybeiaqmp7kocbfdboksayeqhkbrynvlfzsx4uy4x6nohywnmaig4an7u
@@ -31,8 +33,8 @@ protocols:
 skills:
 - valory/abstract_abci:0.1.0:bafybeidb6mfbe7v4ot2fm4h2h66wjr4sbmxox5vrbkw7pcffihta2afvk4
 - valory/abstract_round_abci:0.1.0:bafybeigud2sytkb2ca7lwk7qcz2mycdevdh7qy725fxvwioeeqr7xpwq4e
-- valory/learning_abci:0.1.0:bafybeie2r6ilbblh67lqu5qbhgh6wsbpfry6kekobhwgezdubkumrcar4y
-- valory/learning_chained_abci:0.1.0:bafybeigjv5huoqpdcfbyxs5h5s2cugj2h5axu7ol6gbh67ulrouegwiv6m
+- valory/learning_abci:0.1.0:bafybeidiqkmcfvwlgr5ilwdv6jxmlf3pj7ihw6wo7sbdszq7yg6h72nx7m
+- valory/learning_chained_abci:0.1.0:bafybeifd3ukqfzugfe74hhbo4ay4m65grokzdsu2gumry7alzob4jn7oee
 - valory/registration_abci:0.1.0:bafybeieznuear6lfqu5lzz2ba47nvr7fstyvebam2tngoklzb7itg7xzxe
 - valory/reset_pause_abci:0.1.0:bafybeiadqtlfjx3fjxro4djc2uv2r2mgvzfva2irsdi2oh6lozjlskoolu
 - valory/termination_abci:0.1.0:bafybeig4olfu2nw3tdasxhiiecv2qvs2kj5iuzuy3jecc5puvh5r7gnvqe
@@ -84,13 +86,13 @@ type: connection
 config:
   ledger_apis:
     ethereum:
-      address: ${str:http://localhost:8545}
-      chain_id: ${int:31337}
+      address: ${str:https://virtual.mainnet.rpc.tenderly.co/b5d9551a-363b-49ba-88ea-284c06aa01b9}
+      chain_id: ${int:1}
       poa_chain: ${bool:false}
       default_gas_price_strategy: ${str:eip1559}
     gnosis:
-      address: ${str:http://localhost:8545}
-      chain_id: ${int:1337}
+      address: ${str:https://virtual.gnosis.rpc.tenderly.co/e98802f3-734e-4734-b9b8-967f876bd365}
+      chain_id: ${int:100}
       poa_chain: ${bool:false}
       default_gas_price_strategy: ${str:eip1559}
 ---
@@ -146,7 +148,7 @@ models:
       keeper_timeout: 30.0
       max_attempts: 10
       max_healthcheck: 120
-      multisend_address: ${str:0x0000000000000000000000000000000000000000}
+      multisend_address: ${str:0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761}
       termination_sleep: ${int:900}
       init_fallback_gas: 0
       keeper_allowed_retries: 3
@@ -162,7 +164,7 @@ models:
       service_registry_address: ${str:null}
       setup:
         all_participants: ${list:["0x615d3278680337e2D39C3bc5042D959C7938B917"]}
-        safe_contract_address: ${str:0x5C5b146905c11Ee1fE7260c0338b52DCA9582a13}
+        safe_contract_address: ${str:0x358aCa12Aa4264a4FDEF46A314ac0965F77ab034}
         consensus_threshold: ${int:null}
       share_tm_config_on_startup: ${bool:false}
       sleep_time: 1
@@ -188,3 +190,5 @@ models:
       default_chain_id: ${str:gnosis}
       termination_from_block: ${int:34088325}
       transfer_target_address: ${str:0x615d3278680337e2D39C3bc5042D959C7938B917}
+      real_estate_contract_address: ${str:0xbB98B72A19cEeDaAB9dA2C01be0649471a2b6820}
+      real_estate_token: ${str:0xe91d153e0b41518a2ce8dd3d7944fa863463a97d}
