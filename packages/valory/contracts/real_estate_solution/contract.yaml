@@ -1,0 +1,21 @@
+name: real_estate_solution
+author: valory
+version: 0.1.0
+type: contract
+description: The contract package for the Real Estate Solution contract.
+license: Apache-2.0
+aea_version: '>=1.0.0, <2.0.0'
+fingerprint:
+  __init__.py: bafybeiajm5fcftn6g3ki7udj6mgxjzefaqd6hcp43adx7djwum2duu42ty
+  build/RealEstateBuild.json: bafybeidqaoz434gf5rfurkn7v2ykxzw5rwb4tj5la7hetaluv3xquathaa
+  contract.py: bafybeidregxswkrbm4qwawdumxyuchaxkri65lwce4r5et3yy3v4fetyxi
+fingerprint_ignore_patterns: []
+contracts: []
+class_name: RealEstateSolutionContract
+contract_interface_paths:
+  ethereum: build/RealEstateBuild.json
+dependencies:
+  open-aea-ledger-ethereum:
+    version: ==1.53.0
+  web3:
+    version: <7,>=6.0.0
