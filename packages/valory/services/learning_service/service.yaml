@@ -7,7 +7,7 @@ license: Apache-2.0
 fingerprint:
   README.md: bafybeicpjoeab2f4rfagvifh257iaqayrokswthnea7mvbheuh3jxzo2re
 fingerprint_ignore_patterns: []
-agent: valory/learning_agent:0.1.0:bafybeif4znmxitqn3hw2l6y5wwd3vlj6nev32buieu35g4a5oguophyx7y
+agent: valory/learning_agent:0.1.0:bafybeihuc5tmzrx2gwlyyzizmn7elfxywi77nrczgoawfza67qejbefsz4
 number_of_agents: 4
 deployment:
   agent:
@@ -27,7 +27,7 @@ extra:
   params_args:
     args:
       setup: &id001
-        safe_contract_address: ${SAFE_CONTRACT_ADDRESS:str:0xb9CC0dC3c2be6979FF8cf9ebd7b04284A4eD2fc0}
+        safe_contract_address: ${SAFE_CONTRACT_ADDRESS:str:0x7e32B035D9eE3bF1B2738Dcf033367725B5C3b20}
         all_participants: ${ALL_PARTICIPANTS:list:[]}
         consensus_threshold: null
       genesis_config: &id002
@@ -94,7 +94,7 @@ extra:
         coingecko_api_key: ${COINGECKO_API_KEY:str:null}
         transfer_target_address: ${TRANSFER_TARGET_ADDRESS:str:0x615d3278680337e2D39C3bc5042D959C7938B917}
         real_estate_contract_address: ${REAL_ESTATE_CONTRACT_ADDRESS:str:0xbB98B72A19cEeDaAB9dA2C01be0649471a2b6820}
-        real_estate_token: ${REAL_ESTATE_TOKEN:str:'0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'}
+        real_estate_token: ${REAL_ESTATE_TOKEN:str:0xe91d153e0b41518a2ce8dd3d7944fa863463a97d}
         buy_price_range: ${BUY_PRICE_RANGE:list:[125, 140]}
 1:
   models:
@@ -143,7 +143,7 @@ extra:
         coingecko_api_key: ${COINGECKO_API_KEY:str:null}
         transfer_target_address: ${TRANSFER_TARGET_ADDRESS:str:0x615d3278680337e2D39C3bc5042D959C7938B917}
         real_estate_contract_address: ${REAL_ESTATE_CONTRACT_ADDRESS:str:0xbB98B72A19cEeDaAB9dA2C01be0649471a2b6820}
-        real_estate_token: ${REAL_ESTATE_TOKEN:str:'0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'}
+        real_estate_token: ${REAL_ESTATE_TOKEN:str:0xe91d153e0b41518a2ce8dd3d7944fa863463a97d}
         buy_price_range: ${BUY_PRICE_RANGE:list:[125, 140]}
 2:
   models:
@@ -192,7 +192,7 @@ extra:
         coingecko_api_key: ${COINGECKO_API_KEY:str:null}
         transfer_target_address: ${TRANSFER_TARGET_ADDRESS:str:0x615d3278680337e2D39C3bc5042D959C7938B917}
         real_estate_contract_address: ${REAL_ESTATE_CONTRACT_ADDRESS:str:0xbB98B72A19cEeDaAB9dA2C01be0649471a2b6820}
-        real_estate_token: ${REAL_ESTATE_TOKEN:str:'0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'}
+        real_estate_token: ${REAL_ESTATE_TOKEN:str:0xe91d153e0b41518a2ce8dd3d7944fa863463a97d}
         buy_price_range: ${BUY_PRICE_RANGE:list:[125, 140]}
 3:
   models:
@@ -241,7 +241,7 @@ extra:
         coingecko_api_key: ${COINGECKO_API_KEY:str:null}
         transfer_target_address: ${TRANSFER_TARGET_ADDRESS:str:0x615d3278680337e2D39C3bc5042D959C7938B917}
         real_estate_contract_address: ${REAL_ESTATE_CONTRACT_ADDRESS:str:0xbB98B72A19cEeDaAB9dA2C01be0649471a2b6820}
-        real_estate_token: ${REAL_ESTATE_TOKEN:str:'0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'}
+        real_estate_token: ${REAL_ESTATE_TOKEN:str:0xe91d153e0b41518a2ce8dd3d7944fa863463a97d}
         buy_price_range: ${BUY_PRICE_RANGE:list:[125, 140]}
 ---
 public_id: valory/ledger:0.19.0

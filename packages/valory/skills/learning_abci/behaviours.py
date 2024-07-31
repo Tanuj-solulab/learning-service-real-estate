@@ -106,6 +106,7 @@ class APICheckBehaviour(LearningBaseBehaviour):  # pylint: disable=too-many-ance
                 contract_id=str(RealEstateSolutionContract.contract_id),
                 contract_callable="get_properties_for_sale",
                 contract_address=self.params.real_estate_contract_address,
+                chain_id=GNOSIS_CHAIN_ID,
             )
             self.context.logger.info(
                 f"These are the properties for sale: {contract_response}"
@@ -186,13 +187,6 @@ class DecisionMakingBehaviour(
         """
         Decide whether to buy the property if the price range is in buying zone
         """
-        # contract_response = yield from self.get_contract_api_response(
-        #     performative=ContractApiMessage.Performative.GET_STATE,  # type: ignore
-        #     contract_id=str(RealEstateSolutionContract.contract_id),
-        #     contract_callable="get_properties_for_sale",
-        #     contract_address=self.params.real_estate_contract_address,
-        # )
-        # self.context.logger.info(f"Properties for sale: { contract_response}")
         property_response_from_ipfs = yield from self.get_from_ipfs(
             self.synchronized_data.ipfs_hash, filetype=SupportedFiletype.JSON
         )
@@ -218,22 +212,11 @@ class DecisionMakingBehaviour(
                     "property_id": property[0],
                     "property_value": property[3],
                 }
-            else:
-                self.context.logger.info(
-                    f"Property value {property_value} is outside the buying range"
-                )
 
         self.context.logger.info(
             "No properties within the buying range; deciding to HOLD"
         )
-        return Event.DONE.value
-
-    # def get_event(self):
-    #     """Get the next event"""
-    #     # Using the token price from the previous round, decide whether we should make a transfer or not
-    #     event = Event.DONE.value
-    #     self.context.logger.info(f"Event is {event}")
-    #     return event
+        return Event.DONE.value, {}
 
 
 class TxPreparationBehaviour(
@@ -273,16 +256,23 @@ class TxPreparationBehaviour(
         )
         self.context.logger.info("Transaction decision is Buy")
         batch_transaction = yield from self._build_approve_and_buy_txns()
+        if batch_transaction is None:
+            return "{}"
+        
         multi_send_tx_data = yield from self._get_multisend_tx(batch_transaction)
+        self.context.logger.info(f"MULTISEND TRANSACTIONS: {multi_send_tx_data}")
+        if multi_send_tx_data is None:
+            return "{}"
         return multi_send_tx_data
 
-    def _build_buy_txn(self) -> Generator[None, None, str]:
+    def _build_buy_txn(self) -> Generator[None, None, Optional[bytes]]:
 
         response = yield from self.get_contract_api_response(
             performative=ContractApiMessage.Performative.GET_STATE,  # type: ignore
             contract_id=str(RealEstateSolutionContract.contract_id),
             contract_callable="get_buy_property_tx",
             contract_address=self.params.real_estate_contract_address,
+            chain_id=GNOSIS_CHAIN_ID,
             id=self.synchronized_data.property_id,
         )
 
@@ -362,6 +352,7 @@ class TxPreparationBehaviour(
             "value": self.ETHER_VALUE,
             "data": data,
             "safe_tx_gas": SAFE_GAS,
+            "chain_id": GNOSIS_CHAIN_ID,
             "operation": SafeOperation.DELEGATE_CALL.value
         }
 

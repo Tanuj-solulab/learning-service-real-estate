@@ -46,14 +46,45 @@ def main() -> None:
             ] = f"${{str:{os.getenv('GNOSIS_LEDGER_RPC')}}}"
 
         # Params
+        if os.getenv("REAL_ESTATE_CONTRACT_ADDRESS"):
+            config[-1]["models"]["params"]["args"][
+                "real_estate_contract_address"
+            ] = f"${{str:{os.getenv('REAL_ESTATE_CONTRACT_ADDRESS')}}}"  # type: ignore
+
+        if os.getenv("REAL_ESTATE_TOKEN"):
+            config[-1]["models"]["params"]["args"][
+                "real_estate_token"
+            ] = f"${{str:{os.getenv('REAL_ESTATE_TOKEN')}}}"  # type: ignore
+
+        if os.getenv("TRANSFER_TARGET_ADDRESS"):
+            config[-1]["models"]["params"]["args"][
+                "transfer_target_address"
+            ] = f"${{str:{os.getenv('TRANSFER_TARGET_ADDRESS')}}}"  # type: ignore
+
         if os.getenv("COINGECKO_API_KEY"):
             config[-1]["models"]["params"]["args"][
                 "coingecko_api_key"
             ] = f"${{str:{os.getenv('COINGECKO_API_KEY')}}}"  # type: ignore
 
+        if os.getenv("SAFE_CONTRACT_ADDRESS"):
+            config[-1]["models"]["params"]["args"]["setup"][
+                "safe_contract_address"
+            ] = f"${{str:{os.getenv('SAFE_CONTRACT_ADDRESS')}}}" 
+        
+        if os.getenv("ALL_PARTICIPANTS"):
+            config[-1]["models"]["params"]["args"]["setup"][
+                "all_participants"
+            ] = f"${{list:{os.getenv('ALL_PARTICIPANTS')}}}" 
+        
+        if os.getenv("MULTISEND_ADDRESS"):
+            config[-1]["models"]["params"]["args"][
+                "multisend_address"
+            ] = f"${{str:{os.getenv('MULTISEND_ADDRESS')}}}"  # type: ignore
+
+
     with open(Path("learning_agent", "aea-config.yaml"), "w", encoding="utf-8") as file:
         yaml.dump_all(config, file, sort_keys=False)
 
 
-if __name__ == "__main__":
+if _name_ == "__main__":
     main()
